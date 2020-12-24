@@ -14,5 +14,4 @@
                 :asset-path "."
                 :target :browser
                 :modules {:main {:init-fn app.main/init}}
-                :devtools {:after-load app.main/reload!
-                           :preloads [devtools.preload]}}}}
+                :devtools {:preloads [devtools.preload]}}}}

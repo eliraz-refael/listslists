@@ -11,7 +11,11 @@
 (defn mount []
  (rd/render [router-page] (. js/document getElementById "app") functional-compiler))
 
-(defn start []
+(defn reload-mount []
+  (js/console.log "RELOADING AGAIN!")
+  (rd/render [router-page {:x (js/Date.now)}] (. js/document getElementById "app") functional-compiler))
+
+(defn init-start []
   (js/console.log "Starting...")
   (.appendChild js/document.body (doto (.createElement js/document "div")
                                    (-> (.setAttribute "id" "app"))))
@@ -22,7 +26,11 @@
     (rf/router routes {:data {:coercion rss/coercion}})
     (fn [m] (reset! match m))
     {:use-fragment false})
-  (start))
+  (init-start))
+
+(defn ^:dev/after-load start []
+  (swap! app.router/match assoc :dummy (.now js/Date))
+  (mount))
 
 (defn ^:export reload! []
   (mount))
